@@ -131,13 +131,13 @@ if __name__ == '__main__':
 
     for link in tqdm(links, unit='링크'):
         get_info(link, driver)
-
+    close_time = f"{datetime.datetime.now().strftime('%y%m%d_%H%M%S')}"
     x1 = pd.concat([df_from_excel, pd.Series(results, name='예약 건수')], axis=1)
-    writer = pd.ExcelWriter(f"{datetime.datetime.now().strftime('%y%m%d_%H%M%S_결과.xlsx')}", engine='xlsxwriter', )
+    writer = pd.ExcelWriter(f"{datetime.datetime.now().strftime(f'{close_time}_결과.xlsx')}", engine='xlsxwriter', )
     x1.to_excel(writer, index=False)
     for column, column_length in zip(x1, [8, 30, 30, 70, 30, 8]):
         col_idx = x1.columns.get_loc(column)
         writer.sheets['Sheet1'].set_column(col_idx, col_idx, column_length)
     writer.close()
     driver.close()
-    print('close')
+    print('수집이 완료되었습니다. 해당 창을 꺼주셔도 좋습니다.')

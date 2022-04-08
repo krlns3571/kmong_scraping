@@ -52,6 +52,7 @@ caps = DesiredCapabilities.CHROME
 caps['goog:loggingPrefs'] = {'performance': 'ALL'}
 
 results = []
+now_times = []
 
 
 def explicitly_wait(driver, by, name):
@@ -61,8 +62,9 @@ def explicitly_wait(driver, by, name):
         raise ValueError(by, name)
 
 
-def get_info(link, driver):
-    rows = []
+def get_info(link, driver, cnt):
+    nowtime = datetime.datetime.now().time().replace(microsecond=0)
+    now_times.append(datetime.datetime.now().replace(microsecond=0))
     if link is None:
         results.append('링크없음')
         # print('링크없음')
@@ -86,27 +88,113 @@ def get_info(link, driver):
             pass
 
         try:
-            driver.find_element(By.XPATH, "//span[contains(text(),'오늘')]").click()
-            time.sleep(.5)
+            times = [value.text for value in
+                     driver.find_elements(By.XPATH, "//span[contains(@class,'time_txt')]/span[@ng-bind]")]
 
+            if not times:
+                raise Exception
+            times_results = []
+            for _time in times:
+                if _time.strip() != '':
+                    value = datetime.datetime.strptime(_time, '%H:%M').time()
+                else:
+                    value = datetime.datetime.strptime('00:00', '%H:%M').time()
+                times_results.append(value)
+
+            time_idx = 0
+            for idx, result in enumerate(times_results):
+                if nowtime < result:
+                    time_idx = idx
+                    break
+
+            time_boxes = driver.find_elements(By.XPATH, "//a[contains(@class,'time_box')]/..")[time_idx:]
+            rows = len([timebox.get_attribute('class') for timebox in time_boxes if
+                        timebox.get_attribute('class').find('none') > -1])
+        except:
             try:
-                driver.find_element(By.XPATH, "//span[contains(@class,'_toast_alert_text')]/span")
-                results.append('예약불가')
-                return
-            except:
+                driver.find_element(By.XPATH, "//span[contains(text(),'오늘')]").click()
+                time.sleep(.5)
+
                 try:
-                    driver.find_element(By.XPATH, "//span[contains(@class,'alert_txt')]")
-                    results.append('예약불가')
-                    return
+                    driver.find_element(By.XPATH, "//a[@class='expand_btn']").click()
+                    time.sleep(.5)
                 except:
                     pass
 
-            rows = len(driver.find_elements(By.XPATH, "//*[contains(@class,'sold_out')]"))
-        except:
-            pass
+                try:
+                    driver.find_element(By.XPATH, "//span[contains(@class,'_toast_alert_text')]/span")
+                    results.append('예약불가')
+                    return
+                except:
+                    try:
+                        driver.find_element(By.XPATH, "//span[contains(@class,'alert_txt')]")
+                        results.append('예약불가')
+                        return
+                    except:
+                        pass
+                # times_results = [
+                #     datetime.datetime.strptime(value.text.replace('오전', 'AM').replace('오후', 'PM'), "%p %I:%M").time()
+                #     for value in driver.find_elements(By.XPATH, "//span[@class='box_info']")]
+                #
+                time_idx = 0
+                # for idx, result in enumerate(times_results):
+                #     if nowtime < result:
+                #         time_idx = idx
+                #         break
+                rows = len([value for value in
+                            driver.find_elements(By.XPATH, "//span[contains(@class,'box_info2')]")[time_idx:] if
+                            value.text == '매진'])
+            except:
+                times_results = [datetime.datetime.strptime("AM " + x.text, "%p %I:%M").time() for x in
+                                 driver.find_elements(By.XPATH, "//div[contains(@ng-if,'amTimeBlocks.length > 0')]//a")]
+                [times_results.append(datetime.datetime.strptime("PM " + x.text, "%p %I:%M").time()) for x in
+                 driver.find_elements(By.XPATH, "//div[contains(@ng-if,'pmTimeBlocks.length > 0')]//a")]
+
+                time_idx = 0
+                for idx, result in enumerate(times_results):
+                    if nowtime < result:
+                        time_idx = idx
+                        break
+
+                time_boxes = driver.find_elements(By.XPATH, "//a[contains(@ng-click,'onSelectTimeBlock')]/..")[
+                             time_idx:]
+                rows = len([timebox.get_attribute('class') for timebox in time_boxes if
+                            timebox.get_attribute('class').find('none') > -1])
+
+        # //span[contains(@ng-bind,'$ctrl.getHourMinute')]
+
+        # //span[@class='box_info']
+
+        # //div[contains(@ng-if,'TimeBlocks.length > 0')]
+        # //a[contains(@ng-bind,"timeBlock.unitStartTime.format('h:mm')")]
+
+        # //span[contains(@class,'time_txt')]
+        # //a[contains(@class,'time_box')]
 
         if not rows:
-            rows = len(driver.find_elements(By.XPATH, "//*[contains(@class,'none')]"))
+            try:
+                # times = [value.text for value in driver.find_elements(By.XPATH, "//span[@class='box_info']")]
+                # if not times:
+                #     raise Exception
+                #
+                # times_results = []
+                # for _time in times:
+                #     if _time.strip() != '':
+                #         value = datetime.datetime.strptime(_time, '%H:%M').time()
+                #     else:
+                #         value = datetime.datetime.strptime('00:00', '%H:%M').time()
+                #     times_results.append(value)
+                #
+                time_idx = 0
+                # for idx, result in enumerate(times_results):
+                #     if nowtime < result:
+                #         time_idx = idx
+                #         break
+                rows = len([value for value in
+                            driver.find_elements(By.XPATH, "//span[contains(@class,'box_info2')]")[time_idx:] if
+                            value.text == '매진'])
+            except:
+                pass
 
         if rows == 0:
             try:
@@ -117,8 +205,12 @@ def get_info(link, driver):
     except Exception as e:
         try:
             if driver.find_element(By.XPATH, "//*[contains(@translate,'CM-ERRORNOTIFY_INFO')]"):
-                results.append('이용할 수 없는 예약서비스')
-                get_info(link, driver)
+
+                cnt -= 1
+                if cnt > 0:
+                    get_info(link, driver, cnt)
+                else:
+                    results.append('이용할 수 없는 예약서비스')
         except:
             pass
         results.append('유효하지않음')
@@ -129,13 +221,15 @@ if __name__ == '__main__':
     driver = webdriver.Chrome(executable_path=f'./{chrome_ver}/chromedriver.exe', chrome_options=options,
                               desired_capabilities=caps)
 
+    cnt = 5
     for link in tqdm(links, unit='링크'):
-        get_info(link, driver)
+        get_info(link, driver, cnt)
+    # print(results)
     close_time = f"{datetime.datetime.now().strftime('%y%m%d_%H%M%S')}"
-    x1 = pd.concat([df_from_excel, pd.Series(results, name='예약 건수')], axis=1)
+    x1 = pd.concat([pd.Series(now_times, name='수집 시각'), df_from_excel, pd.Series(results, name='예약 건수')], axis=1)
     writer = pd.ExcelWriter(f"{datetime.datetime.now().strftime(f'{close_time}_결과.xlsx')}", engine='xlsxwriter', )
     x1.to_excel(writer, index=False)
-    for column, column_length in zip(x1, [8, 30, 30, 70, 30, 8]):
+    for column, column_length in zip(x1, [20, 8, 30, 30, 70, 30, 8]):
         col_idx = x1.columns.get_loc(column)
         writer.sheets['Sheet1'].set_column(col_idx, col_idx, column_length)
     writer.close()

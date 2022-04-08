@@ -157,14 +157,22 @@ if __name__ == '__main__':
         prices = ""
         names = ""
         for x in range(len(driver.find_elements(By.XPATH, "//div[@class='sku-property']/ul"))):
-            price_list.append(driver.find_element(By.XPATH, "//span[contains(@class,'price')]").text)
+            # 금액 입력
+            # price_list.append(driver.find_element(By.XPATH, "//span[contains(@class,'price')]").text)
+            # '1' 입력
+            price_list.append(' 1')
+
             for idx, value in enumerate(driver.find_elements(By.XPATH, f"//div[@class='sku-property'][{x + 1}]//li")):
                 if idx == 0:
                     names_list.append(
                         driver.find_elements(By.XPATH, "//span[contains(@class,'sku-title-value')]")[x].text)
                     continue
                 value.click()
-                price_list.append(driver.find_element(By.XPATH, "//span[contains(@class,'price')]").text)
+                # 금액 입력
+                # price_list.append(driver.find_element(By.XPATH, "//span[contains(@class,'price')]").text)
+                # '1' 입력
+                price_list.append(' 1')
+
                 names_list.append(driver.find_elements(By.XPATH, "//span[contains(@class,'sku-title-value')]")[x].text)
                 time.sleep(.5)
 

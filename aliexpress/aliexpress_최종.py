@@ -28,6 +28,14 @@ def explicitly_wait(driver, by, name):
         raise ValueError(by, name)
 
 
+def print_xlsx(list_):
+    df = pd.DataFrame(list_, )
+    writer = pd.ExcelWriter(f"{datetime.datetime.now().strftime('%y%m%d_%H%M%S_result.xlsx')}",
+                            engine='xlsxwriter', )
+    df.to_excel(writer, header=False, index=False)
+    writer.close()
+
+
 pymysql.install_as_MySQLdb()
 
 warnings.simplefilter("ignore", category=pymysql.Warning)
@@ -71,13 +79,38 @@ links = [
     "https://ko.aliexpress.com/item/1005002615991860.html?spm=a2g0o.productlist.0.0.1682fea97gLwOf&algo_pvid=b04f1c59-9b37-4e26-8776-d25209af7330&algo_exp_id=b04f1c59-9b37-4e26-8776-d25209af7330-55&pdp_ext_f=%7B%22sku_id%22%3A%2212000021408298422%22%7D&pdp_pi=-1%3B24379.0%3B-1%3B-1%40salePrice%3BKRW%3Bsearch-mainSearch"
 ]
 
+# 가격결과 출력
+PRINT_PRICE = True
+# 옵션명결과 출력
+PRINT_OPTION = True
+
+# 가격결과, 옵션명결과 둘다 True로 할 경우 각각의 결과값이 출력됩니다.
+
+namedict = {
+    "PRINT_PRICE": '가격',
+    "PRINT_OPTION": '옵션명'
+}
+
+
+def print_xlsx(list_, flag):
+    df = pd.DataFrame(list_, )
+    writer = pd.ExcelWriter(f"{datetime.datetime.now().strftime(f'%y%m%d_%H%M%S_{namedict[flag]}_result.xlsx')}",
+                            engine='xlsxwriter', )
+    df.to_excel(writer, header=False, index=False)
+    writer.close()
+
+
 if __name__ == '__main__':
     options = []
+    option_names = []
 
     for idx, link in enumerate(links):
         driver.get(link)
         print(link)
+
         options.append(link)
+        option_names.append(link)
+
         while True:
             try:
                 # 원화가 아닐경우 원화로 변경
@@ -119,25 +152,38 @@ if __name__ == '__main__':
             x.click()
 
         price_list = []
+        names_list = []
 
         prices = ""
+        names = ""
         for x in range(len(driver.find_elements(By.XPATH, "//div[@class='sku-property']/ul"))):
             price_list.append(driver.find_element(By.XPATH, "//span[contains(@class,'price')]").text)
             for idx, value in enumerate(driver.find_elements(By.XPATH, f"//div[@class='sku-property'][{x + 1}]//li")):
-                if idx == 0: continue
+                if idx == 0:
+                    names_list.append(
+                        driver.find_elements(By.XPATH, "//span[contains(@class,'sku-title-value')]")[x].text)
+                    continue
                 value.click()
                 price_list.append(driver.find_element(By.XPATH, "//span[contains(@class,'price')]").text)
+                names_list.append(driver.find_elements(By.XPATH, "//span[contains(@class,'sku-title-value')]")[x].text)
                 time.sleep(.5)
 
             driver.find_elements(By.XPATH, f"//div[@class='sku-property'][{x + 1}]//li")[0].click()
-            prices +=", ".join([price.split(' ')[1].replace(',', '') for price in price_list])+ '\n'
+            prices += ", ".join([price.split(' ')[1].replace(',', '') for price in price_list]) + '\n'
+            names += ", ".join([name for name in names_list]) + '\n'
             price_list = []
-        options.append(prices[:-1])
+            names_list = []
 
-    df = pd.DataFrame(options, )
-    writer = pd.ExcelWriter(f"{datetime.datetime.now().strftime('%y%m%d_%H%M%S_result.xlsx')}", engine='xlsxwriter', )
-    df.to_excel(writer,header=False, index=False)
-    writer.close()
+        options.append(prices[:-1])
+        option_names.append(names[:-1])
+
+    if PRINT_PRICE and PRINT_OPTION:
+        print_xlsx(options, 'PRINT_PRICE')
+        print_xlsx(option_names, 'PRINT_OPTION')
+    elif PRINT_OPTION:
+        print_xlsx(option_names, 'PRINT_OPTION')
+    else:
+        print_xlsx(options, 'PRINT_PRICE')
 
     driver.close()
     sys.exit()

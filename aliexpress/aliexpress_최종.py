@@ -74,9 +74,7 @@ driver = webdriver.Chrome(executable_path=f'./{chrome_ver}/chromedriver.exe', ch
 
 # 링크 입력하셔서 사용하시면 되고, list에 여러개 입력 가능합니다
 links = [
-    "https://ko.aliexpress.com/item/1005003731563532.html?spm=a2g0o.productlist.0.0.33ebfea9nbIhkk&algo_pvid=993fd025-c7db-44ef-ad85-7f9cda2b89d4&algo_exp_id=993fd025-c7db-44ef-ad85-7f9cda2b89d4-8&pdp_ext_f=%7B%22sku_id%22%3A%2212000026966598087%22%7D&pdp_pi=28301.0%3B6512.0%3B-1%3B-1%40salePrice%3BKRW%3Bsearch-mainSearch",
-    "https://ko.aliexpress.com/item/4000934672679.html?spm=a2g0o.productlist.0.0.1682fea97gLwOf&algo_pvid=b04f1c59-9b37-4e26-8776-d25209af7330&algo_exp_id=b04f1c59-9b37-4e26-8776-d25209af7330-2&pdp_ext_f=%7B%22sku_id%22%3A%2210000011289134527%22%7D&pdp_pi=-1%3B9002.0%3B-1%3B-1%40salePrice%3BKRW%3Bsearch-mainSearch",
-    "https://ko.aliexpress.com/item/1005002615991860.html?spm=a2g0o.productlist.0.0.1682fea97gLwOf&algo_pvid=b04f1c59-9b37-4e26-8776-d25209af7330&algo_exp_id=b04f1c59-9b37-4e26-8776-d25209af7330-55&pdp_ext_f=%7B%22sku_id%22%3A%2212000021408298422%22%7D&pdp_pi=-1%3B24379.0%3B-1%3B-1%40salePrice%3BKRW%3Bsearch-mainSearch"
+    "https://ko.aliexpress.com/item/1005002602802000.html?algo_pvid=b51a9914-231b-43ee-b1d9-2a0844d4530d&algo_exp_id=b51a9914-231b-43ee-b1d9-2a0844d4530d-0&pdp_ext_f=%7B%22sku_id%22%3A%2212000021886699542%22%7D&pdp_pi=-1%3B4079.0%3B-1%3B164.0%40salePrice%3BKRW%3Bsearch-mainSearch"
 ]
 
 # 가격결과 출력
@@ -110,6 +108,9 @@ if __name__ == '__main__':
 
         options.append(link)
         option_names.append(link)
+
+        price_list = []
+        names_list = []
 
         while True:
             try:
@@ -149,10 +150,14 @@ if __name__ == '__main__':
 
         # 각각의 첫번째 옵션 클릭
         for x in driver.find_elements(By.XPATH, "//div[@class='sku-property']//li[1]"):
-            x.click()
-
-        price_list = []
-        names_list = []
+            try:
+                x.click()
+            except:
+                price_list.append(' 1')
+                names_list.append(
+                    driver.find_elements(By.XPATH, f"//div[@class='sku-property'][1]//li//img")[0].get_attribute(
+                        'title'))
+                continue
 
         prices = ""
         names = ""
@@ -167,7 +172,14 @@ if __name__ == '__main__':
                     names_list.append(
                         driver.find_elements(By.XPATH, "//span[contains(@class,'sku-title-value')]")[x].text)
                     continue
-                value.click()
+                try:
+                    value.click()
+                except:
+                    price_list.append(' 1')
+                    names_list.append(
+                        driver.find_elements(By.XPATH, f"//div[@class='sku-property'][{x + 1}]//li//img")[
+                            idx].get_attribute('title'))
+                    continue
                 # 금액 입력
                 # price_list.append(driver.find_element(By.XPATH, "//span[contains(@class,'price')]").text)
                 # '1' 입력

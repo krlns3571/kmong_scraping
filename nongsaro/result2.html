@@ -1,0 +1,1944 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--[if lt IE 7]>  <body class="no-js ie ie6 lte9 lte8 lte7"> <![endif]-->
+<!--[if IE 7]>     <body class="no-js ie ie7 lte9 lte8 lte7"> <![endif]-->
+<!--[if IE 8]>     <body class="no-js ie ie8 lte9 lte8"> <![endif]-->
+<!--[if IE 9]>     <body class="no-js ie ie9 lte9"> <![endif]-->
+<!--[if gt IE 9]>  <body class="no-js">  <![endif]-->
+<!--[if !IE]><!--><body><!--<![endif]-->
+<form id="paramVO" name="listForm" action="/portal/ps/psb/psbf/frmprdIncomeInfoDtl.ps;jsessionid=UaULD0lM0zakk855QAFo4vOKKkBbtshJyXcDKbejkm3bXsb97oje6PICpVepwfke.nongsaro-web_servlet_engine1" method="post">
+	<input id="menuId" name="menuId" type="hidden" value=""/>
+	<input id="sYear" name="sYear" type="hidden" value="2012"/>
+	<input id="sUnit" name="sUnit" type="hidden" value=""/>
+	<input id="sAtpt" name="sAtpt" type="hidden" value="9900000000"/>
+	<input id="sTest" name="sTest" type="hidden" value=""/>
+	<input id="eqpCode" name="eqpCode" type="hidden" value="02010002"/>
+
+	<!-- pop-bx -->
+	<div class="pop-bx">
+
+		<!-- 콘텐츠 영역 -->
+		<div class="con-bx">
+			<div class="tit-area2">
+				<div class="top-btn" style="position:absolute; right:0; top:0;">
+					
+
+<a href="#none" onclick="fncFrmprdPrint();return false;" class="sns-set"><span class="print"></span>인쇄</a>
+
+
+<script type="text/javascript" src="/js/es6-promise.auto.min.js"></script>
+<script type="text/javascript" src="/js/html2canvas.js?ver=0.1"></script>
+
+<script type="text/javascript">
+	/* IFrame */
+	function fncFrmprdPrint(){
+		$("#tmpPrintArea").show();
+
+		var $trget = $("#tmpPrintArea #printLayerZone");
+
+		$trget.css({"max-width" : $trget.width()});
+
+		try{	//canvas 지원 여부
+			html2canvas($trget, {
+				onrendered: function(canvas) {
+					var imgTag = "<div class='page'><div class='subpage'></div></div>";
+					$("#print_layer_iframe").contents().find("body").html(imgTag);
+					$("#print_layer_iframe").contents().find("body .subpage").html(canvas);
+					$("#print_layer_iframe").contents().find("body canvas").css({"width" : "100%", "height" : "99%"});
+					print_layer_iframe.document.execCommand('print', false, null);
+				}
+			});
+		}catch(e){
+			var $contents =  $trget.clone();		//기존 요소 복사
+		    $contents.find("script").remove();				//스크립트 제거
+		    $contents.find(".top-btn").remove();			//인쇄 버튼 제거
+
+			$("#print_layer_iframe").contents().find(".printLayerContents").html($contents.html()).focus();
+
+			if (window.print) {
+				setTimeout(function(){
+					print_layer_iframe.printCall();
+				}, 1000);
+		   	}
+		}
+
+		//$("#tmpPrintArea").hide();
+	}
+</script>
+<iframe name="print_layer_iframe" id="print_layer_iframe" src="/portal/blankFrmprdPrintLayer.ps;jsessionid=UaULD0lM0zakk855QAFo4vOKKkBbtshJyXcDKbejkm3bXsb97oje6PICpVepwfke.nongsaro-web_servlet_engine1" width="100%" height="0" style="display:none;" title="프린트레이어프레임"></iframe><!-- 인쇄 -->
+				</div>
+			</div>
+
+			<div id="printLayerZone">
+				<div><h3 class="txt-c" style="margin-top:10px;">겉보리</h3></div>
+				<div class="tit-area2">
+					<h2 class="pop-tit">2012년 전국</h2>
+					<div class="ref-r" style="position:absolute; right:0; top:0;">(기준 : 년 1기작/10a)</div>
+				</div>
+				<!-- // 타이틀 -->
+				<div class="tbl-type01">
+					<table id="contentTb" height="100%">
+						<caption>농수산물 소득정보 리스트</caption>
+						<colgroup>
+							<col style="width:5%" />
+							<col style="width:5%" />
+							<col style="width:5%" />
+							<col style="width:20%" />
+							<col style="width:15%" />
+							<col style="width:15%" />
+							<col style="width:15%" />
+							<col style="width:20%" />
+						</colgroup>
+						<thead>
+							<tr>
+								<th scope="col" colspan="4">비목별</th>
+								<th scope="col">수량(Kg)</th>
+								<th scope="col">단가(원)</th>
+								<th scope="col">금액(원)</th>
+								<th scope="col">비고</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<th scope="row" rowspan="2">조<br /><br />수<br /><br />입</th>
+								<td colspan="3">
+									
+										
+											<p class="except">주산물가액</p>
+										
+											<p class="except">부산물가액</p>
+										
+									
+								</td>
+								<td class="vtxt-t txt-r">
+									
+										
+											
+												
+												
+													
+														
+														
+															<p class="except">423kg</p>
+														
+													
+												
+											
+										
+											
+												&nbsp;
+												
+											
+										
+									
+								</td>
+								<td class="txt-r">
+									
+										
+											
+												
+												
+													<p class="except">1,102</p>
+												
+											
+										
+											
+												
+												
+													<p class="except">0</p>
+												
+											
+										
+									
+								</td>
+								<td class="txt-r">
+									
+										
+											
+												
+												
+													<p class="except">466,146</p>
+												
+											
+										
+											
+												
+												
+													<p class="except">5,877</p>
+												
+											
+										
+									
+								</td>
+								<td class="vtxt-t">
+									<p class="except">&nbsp;</p>
+									
+										
+											<p class="except">
+									 			상품화율&nbsp;
+												
+													
+													
+														
+															
+															
+																94.8
+															
+														
+														%
+													
+												
+											</p>
+										
+									
+								</td>
+							</tr>
+							<tr>
+								<td colspan="3" class="txt-c" style="border:1px solid #dedede">계</td>
+								<td>&nbsp;</td>
+								<td>&nbsp;</td>
+								<td class="txt-r"><p>472,023<p></td>
+								<td>&nbsp;</td>
+							</tr>
+							<tr>
+								<th scope="row" rowspan="5">생<br /><br /><br />산<br /><br /><br />비</th>
+								<th scope="row" rowspan="4">경<br /><br /><br />영<br /><br /><br />비</th>
+								<th scope="row" rowspan="2">중<br /><br /><br />간<br /><br /><br />재<br /><br /><br />비</th>
+								<td class="vtxt-t">
+									
+										
+											
+												
+												
+												
+												<p>종자비</p>
+												
+												
+											
+										
+											
+												
+												
+												
+												
+												
+												
+											
+										
+											
+												
+												
+												
+												
+												
+												<p>무기질비료비</p>
+											
+										
+											
+												
+												
+												
+												
+												
+												<p>유기질비료비</p>
+											
+										
+											
+												
+												
+												
+												
+												
+												<p>농약비</p>
+											
+										
+											
+												
+												
+												
+												
+												
+												<p>광열동력비</p>
+											
+										
+											
+												
+												
+												
+												
+												
+												<p>수리(水利)비</p>
+											
+										
+											
+												
+												
+												
+												
+												
+												<p>제재료비</p>
+											
+										
+											
+												
+												
+												
+												
+												
+												<p>소농구비</p>
+											
+										
+											
+												
+												
+												
+												
+												
+												<p>대농구상각비</p>
+											
+										
+											
+												
+												
+												
+												
+												
+												<p>영농시설상각비</p>
+											
+										
+											
+												
+												
+												<p>수선비</p>
+												
+												
+												
+											
+										
+											
+												
+												
+												
+												
+												
+												<p>기타요금</p>
+											
+										
+									
+								</td>
+								<td class="vtxt-t txt-r">
+									
+										
+											
+												
+												
+													<p>
+														
+															
+															
+															24.4
+															
+														
+														kg
+													</p>
+												
+											
+										
+											
+												
+													
+														
+														
+													
+												
+												
+											
+										
+											
+												
+													
+														
+														<p>&nbsp;</p>
+													
+												
+												
+											
+										
+											
+												
+												
+													<p>
+														
+															
+															
+															1112
+															
+														
+														kg
+													</p>
+												
+											
+										
+											
+												
+													
+														
+														<p>&nbsp;</p>
+													
+												
+												
+											
+										
+											
+												
+													
+														
+														<p>&nbsp;</p>
+													
+												
+												
+											
+										
+											
+												
+													
+														
+														<p>&nbsp;</p>
+													
+												
+												
+											
+										
+											
+												
+													
+														
+														<p>&nbsp;</p>
+													
+												
+												
+											
+										
+											
+												
+													
+														
+														<p>&nbsp;</p>
+													
+												
+												
+											
+										
+											
+												
+													
+														
+														<p>&nbsp;</p>
+													
+												
+												
+											
+										
+											
+												
+													
+														
+														<p>&nbsp;</p>
+													
+												
+												
+											
+										
+											
+												
+													
+														
+														<p>&nbsp;</p>
+													
+												
+												
+											
+										
+											
+												
+													
+														
+														<p>&nbsp;</p>
+													
+												
+												
+											
+										
+									
+								</td>
+								<td class="txt-r vtxt-t">
+									
+										
+											
+												
+												
+													<p>
+														
+															
+															
+																1,082
+															
+														
+													</p>
+												
+											
+										
+											
+												
+													
+														
+														
+													
+												
+												
+											
+										
+											
+												
+													
+														
+														<p>&nbsp;</p>
+													
+												
+												
+											
+										
+											
+												
+												
+													<p>
+														
+															
+															
+																19
+															
+														
+													</p>
+												
+											
+										
+											
+												
+													
+														
+														<p>&nbsp;</p>
+													
+												
+												
+											
+										
+											
+												
+													
+														
+														<p>&nbsp;</p>
+													
+												
+												
+											
+										
+											
+												
+													
+														
+														<p>&nbsp;</p>
+													
+												
+												
+											
+										
+											
+												
+													
+														
+														<p>&nbsp;</p>
+													
+												
+												
+											
+										
+											
+												
+													
+														
+														<p>&nbsp;</p>
+													
+												
+												
+											
+										
+											
+												
+													
+														
+														<p>&nbsp;</p>
+													
+												
+												
+											
+										
+											
+												
+													
+														
+														<p>&nbsp;</p>
+													
+												
+												
+											
+										
+											
+												
+													
+														
+														<p>&nbsp;</p>
+													
+												
+												
+											
+										
+											
+												
+													
+														
+														<p>&nbsp;</p>
+													
+												
+												
+											
+										
+									
+								</td>
+								<td class="txt-r vtxt-t">
+								
+									
+										
+											
+											
+												<p>
+													
+														
+														
+														26,393
+														
+													
+												</p>
+											
+										
+									
+										
+											
+											
+										
+									
+										
+											
+											
+												<p>
+													
+														
+														
+														32,587
+														
+													
+												</p>
+											
+										
+									
+										
+											
+											
+												<p>
+													
+														
+														
+														20,718
+														
+													
+												</p>
+											
+										
+									
+										
+											
+											
+												<p>
+													
+														
+														
+														3,888
+														
+													
+												</p>
+											
+										
+									
+										
+											
+											
+												<p>
+													
+														
+														
+														16,125
+														
+													
+												</p>
+											
+										
+									
+										
+											
+											
+												<p>
+													
+														
+														
+														0
+														
+													
+												</p>
+											
+										
+									
+										
+											
+											
+												<p>
+													
+														
+														
+														5,970
+														
+													
+												</p>
+											
+										
+									
+										
+											
+											
+												<p>
+													
+														
+														
+														199
+														
+													
+												</p>
+											
+										
+									
+										
+											
+											
+												<p>
+													
+														
+														
+														74,311
+														
+													
+												</p>
+											
+										
+									
+										
+											
+											
+												<p>
+													
+														
+														
+														2,330
+														
+													
+												</p>
+											
+										
+									
+										
+											
+											
+												<p>
+													
+														
+														
+														3,748
+														
+													
+												</p>
+											
+										
+									
+										
+											
+											
+												<p>
+													
+														
+														
+														795
+														
+													
+												</p>
+											
+										
+									
+								
+								</td>
+								<td class="vtxt-t" id="hcArea">
+								
+									
+									
+									
+									
+								
+								
+									
+								
+									
+										<p class="except" style="line-height:17px;">
+											
+												
+												
+												N&nbsp;
+											
+											
+												
+												
+												
+												13.1&nbsp;kg
+												
+											
+										</p>
+									
+										<p class="except" style="line-height:17px;">
+											
+												
+												
+												P&nbsp;
+											
+											
+												
+												
+												
+												5.8&nbsp;kg
+												
+											
+										</p>
+									
+										<p class="except" style="line-height:17px;">
+											
+												
+												
+												K&nbsp;
+											
+											
+												
+												
+												
+												5.3&nbsp;kg
+												
+											
+										</p>
+									
+										<p class="except" style="line-height:17px;">
+											
+												
+												
+												요소&nbsp;
+											
+											
+												
+												
+												
+												12.4&nbsp;kg
+												
+											
+										</p>
+									
+										<p class="except" style="line-height:17px;">
+											
+												
+												
+												유안&nbsp;
+											
+											
+												
+												
+												
+												0.2&nbsp;kg
+												
+											
+										</p>
+									
+										<p class="except" style="line-height:17px;">
+											
+												
+												
+												
+											
+											
+												
+												
+												
+											
+										</p>
+									
+										<p class="except" style="line-height:17px;">
+											
+												
+												
+												
+											
+											
+												
+												
+												
+											
+										</p>
+									
+										<p class="except" style="line-height:17px;">
+											
+												
+												
+												
+											
+											
+												
+												
+												
+											
+										</p>
+									
+										<p class="except" style="line-height:17px;">
+											
+												
+												
+												농용석회&nbsp;
+											
+											
+												
+												
+												
+												7.2&nbsp;kg
+												
+											
+										</p>
+									
+										<p class="except" style="line-height:17px;">
+											
+												
+												복합비료&nbsp;
+												
+											
+											
+												
+												
+												
+												36.1&nbsp;kg
+												
+											
+										</p>
+									
+										<p class="except" style="line-height:17px;">
+											
+												
+												
+												규산질&nbsp;
+											
+											
+												
+												
+												
+												3.9&nbsp;kg
+												
+											
+										</p>
+									
+										<p class="except" style="line-height:17px;">
+											
+												
+												
+												영양제액제&nbsp;
+											
+											
+												
+												
+												
+												0.4&nbsp;l
+												
+											
+										</p>
+									
+										<p class="except" style="line-height:17px;">
+											
+												
+												
+												
+											
+											
+												
+												
+												
+											
+										</p>
+									
+										<p class="except" style="line-height:17px;">
+											
+												
+												
+												살충제유제&nbsp;
+											
+											
+												
+												
+												
+												7.3&nbsp;ml
+												
+											
+										</p>
+									
+										<p class="except" style="line-height:17px;">
+											
+												
+												
+												
+											
+											
+												
+												
+												
+											
+										</p>
+									
+										<p class="except" style="line-height:17px;">
+											
+												
+												
+												
+											
+											
+												
+												
+												
+											
+										</p>
+									
+										<p class="except" style="line-height:17px;">
+											
+												
+												
+												
+											
+											
+												
+												
+												
+											
+										</p>
+									
+										<p class="except" style="line-height:17px;">
+											
+												
+												
+												
+											
+											
+												
+												
+												
+											
+										</p>
+									
+										<p class="except" style="line-height:17px;">
+											
+												
+												
+												
+											
+											
+												
+												
+												
+											
+										</p>
+									
+										<p class="except" style="line-height:17px;">
+											
+												
+												
+												
+											
+											
+												
+												
+												
+											
+										</p>
+									
+										<p class="except" style="line-height:17px;">
+											
+												
+												
+												
+											
+											
+												
+												
+												
+											
+										</p>
+									
+										<p class="except" style="line-height:17px;">
+											
+												
+												
+												제초제유제&nbsp;
+											
+											
+												
+												
+												
+												208.2&nbsp;ml
+												
+											
+										</p>
+									
+										<p class="except" style="line-height:17px;">
+											
+												
+												
+												제초제입제&nbsp;
+											
+											
+												
+												
+												
+												0.7&nbsp;kg
+												
+											
+										</p>
+									
+										<p class="except" style="line-height:17px;">
+											
+												
+												
+												전기&nbsp;
+											
+											
+												
+												
+												
+												0.4&nbsp;kw
+												
+											
+										</p>
+									
+										<p class="except" style="line-height:17px;">
+											
+												
+												
+												
+											
+											
+												
+												
+												
+											
+										</p>
+									
+										<p class="except" style="line-height:17px;">
+											
+												
+												
+												유류&nbsp;
+											
+											
+												
+												
+												
+												12.8&nbsp;l
+												
+											
+										</p>
+									
+										<p class="except" style="line-height:17px;">
+											
+												
+												
+												
+											
+											
+												
+												
+												
+											
+										</p>
+									
+										<p class="except" style="line-height:17px;">
+											
+												
+												
+												
+											
+											
+												
+												
+												
+											
+										</p>
+									
+										<p class="except" style="line-height:17px;">
+											
+												
+												
+												
+											
+											
+												
+												
+												
+											
+										</p>
+									
+										<p class="except" style="line-height:17px;">
+											
+												
+												
+												
+											
+											
+												
+												
+												
+											
+										</p>
+									
+										<p class="except" style="line-height:17px;">
+											
+												
+												
+												
+											
+											
+												
+												
+												
+											
+										</p>
+									
+										<p class="except" style="line-height:17px;">
+											
+												
+												
+												
+											
+											
+												
+												
+												
+											
+										</p>
+									
+										<p class="except" style="line-height:17px;">
+											
+												
+												
+												포장상자&nbsp;
+											
+											
+												
+												
+												
+												7.1&nbsp;개
+												
+											
+										</p>
+									
+										<p class="except" style="line-height:17px;">
+											
+												
+												
+												
+											
+											
+												
+												
+												
+											
+										</p>
+									
+								
+								</td>
+							</tr>
+							<tr>
+								<td class="txt-c">계</td>
+								<td>&nbsp;</td>
+								<td>&nbsp;</td>
+								<td class="txt-r"><p>187,064</p></td>
+								<td>&nbsp;</td>
+							</tr>
+							<tr>
+							
+								<td colspan="2" class="vtxt-t" style="border:1px solid #dedede">
+									
+										
+											
+												
+												
+												
+													<p>임차료(농기계.시설)</p>
+												
+											
+										
+											
+												
+												
+												
+													<p>임차료(토지)</p>
+												
+											
+										
+											
+												
+												
+												
+													<p>위탁영농비</p>
+												
+											
+										
+											
+												
+												
+												
+													<p>고용노력비</p>
+												
+											
+										
+											
+												
+												
+												
+											
+										
+											
+												
+												
+												
+											
+										
+									
+								</td>
+								<td class="vtxt-t txt-r">
+									
+										
+											
+												<p>&nbsp;</p>
+												
+											
+										
+											
+												<p>&nbsp;</p>
+												
+											
+										
+											
+												<p>&nbsp;</p>
+												
+											
+										
+											
+												
+												
+													<p>
+														
+															
+															
+															0.2
+															
+														
+														시간
+													</p>
+												
+											
+										
+											
+												<p>&nbsp;</p>
+												
+											
+										
+											
+												<p>&nbsp;</p>
+												
+											
+										
+									
+								</td>
+								<td class="vtxt-t txt-r">
+									
+										
+											
+												
+												
+											
+										
+											
+												<p>&nbsp;</p>
+												
+											
+										
+											
+												<p>&nbsp;</p>
+												
+											
+										
+											
+												<p>&nbsp;</p>
+												
+											
+										
+											
+												
+												
+													<p>
+														
+															
+															남 9,914
+															
+															
+															
+														
+													</p>
+												
+											
+										
+											
+												
+												
+													<p>
+														
+															
+															
+															여 6,165
+															
+															
+														
+													</p>
+												
+											
+										
+									
+								</td>
+								<td class="vtxt-t txt-r">
+									
+										
+											
+												
+												
+													<p>5,803</p>
+												
+											
+										
+											
+												
+												
+													<p>35,240</p>
+												
+											
+										
+											
+												
+												
+													<p>8,400</p>
+												
+											
+										
+											
+												
+												
+													<p>1,983</p>
+												
+											
+										
+											
+												&nbsp;
+												
+											
+										
+											
+												&nbsp;
+												
+											
+										
+									
+								</td>
+								<td class="vtxt-t">
+									
+										<p>&nbsp;</p>
+									
+										<p>&nbsp;</p>
+									
+										<p>&nbsp;</p>
+									
+									
+										
+											<p>
+												남
+												
+													
+													
+													0.2
+													
+												
+												시간
+											</p>
+										
+											<p>
+												여
+												
+													
+													
+													0
+													
+												
+												시간
+											</p>
+										
+									
+								</td>
+							</tr>
+							<tr>
+								<td colspan="2" class="txt-c">계</td>
+								<td>&nbsp;</td>
+								<td>&nbsp;</td>
+								<td class="txt-r"><p>238,490</p></td>
+								<td>&nbsp;</td>
+							</tr>
+							<tr>
+								<td colspan="3" class="vtxt-t" style="border:1px solid #dedede">
+									
+										
+											
+												
+												
+												
+												
+												
+												자가노력비
+												
+											
+											
+												<p>&nbsp;</p><p>&nbsp;</p>
+											
+										
+											
+												
+												
+												
+												
+												
+												
+												
+											
+											
+										
+											
+												
+												
+												
+												
+												
+												
+												
+											
+											
+										
+											
+												
+												
+												
+												
+												
+												
+												
+											
+											
+										
+											
+												
+												
+												
+												
+												
+												
+												
+											
+											
+										
+											
+												
+												
+												
+												
+												
+												
+												
+											
+											
+										
+									
+								</td>
+								<td class="vtxt-t txt-r">
+									
+										
+											
+												
+												
+													<p>8.7시간</p>
+													
+														
+													
+												
+											
+										
+											
+												
+													
+														
+														
+														
+														<p>&nbsp;</p>
+													
+												
+												
+											
+										
+											
+												
+													
+														
+														
+														
+														<p>&nbsp;</p>
+													
+												
+												
+											
+										
+											
+												
+													
+														
+														
+														
+														
+													
+												
+												
+											
+										
+											
+												
+													
+														
+														
+														
+														
+													
+												
+												
+											
+										
+											
+												
+													
+														
+														
+														
+														
+													
+												
+												
+											
+										
+									
+								</td>
+								<td class="vtxt-t txt-r">
+									
+										
+											
+												
+												
+												
+												
+												
+											
+										
+											
+												
+												
+												
+												
+												
+													
+														
+														<p>남 9,778</p>
+														
+														
+														
+													
+												
+											
+										
+											
+												
+												
+												
+												
+												
+													
+														
+														
+														<p>여 6,112</p>
+														
+														
+													
+												
+											
+										
+											
+												
+												
+												
+												
+												
+											
+										
+											
+												
+												
+												
+												
+												
+											
+										
+											
+												
+												
+												
+												
+												
+											
+										
+									
+								</td>
+								<td class="vtxt-t txt-r">
+									
+										
+											
+												
+												
+												
+												
+												
+													<p>
+														77,003
+													</p>
+												
+											
+											
+										
+											
+												
+												
+												
+												
+												
+											
+											
+										
+											
+												
+												
+												
+												
+												
+											
+											
+										
+											
+												
+												
+												
+												
+												
+											
+											
+										
+											
+												
+												
+												
+												
+												
+											
+											
+										
+											
+												
+												
+												
+												
+												
+											
+											
+										
+									
+								</td>
+								<td class="vtxt-t">
+									
+										
+											<p>
+												남
+												
+													
+													
+													6.5
+													
+												
+												시간
+											</p>
+										
+											<p>
+												여
+												
+													
+													
+													2.2
+													
+												
+												시간
+											</p>
+										
+									
+								</td>
+							</tr>
+							
+							<tr>
+								<th scope="row" colspan="4" style="line-height:18px;">
+									소 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;득<br />
+									부 &nbsp;가 &nbsp;가 &nbsp;치<br />
+									
+									소 &nbsp;득 &nbsp;률(%)
+								</th>
+								<td>&nbsp;</td>
+								<td>&nbsp;</td>
+								<td class="txt-r">
+									<p class="except">233,533</p>
+									<p class="except">284,959</p>
+									
+									<p class="except">
+										
+											
+											
+												
+												49.5
+											
+										
+									</p>
+								</td>
+								<td>&nbsp;</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div style="margin-top:10px;">
+					
+				</div>
+			</div>
+		</div>
+		<!-- //페이지 -->
+
+		<!-- 버튼 -->
+		<div class="txt-c mt10">
+			<a href="#none" class="btn-2-w" onclick="$('#frmprdPopArea').dialog('close');"><span>닫기</span></a>
+		</div>
+		<!-- //버튼 -->
+
+		<!--  btn-clo-->
+		<div class="btn-clo">
+			<a href="#"><span class="close" onclick="$('#frmprdPopArea').dialog('close');">닫기</span></a>
+		</div>
+		<!--  //btn-clo-->
+	</div>
+</form>
+
+<script>
+	$(function(){
+		$trget = $("#contentTb");
+		cHeight = 3;	//페이지 넘어갈 시 늘릴 것
+
+		
+		fncOpHeight = function(){
+	 		var pHeight = 0;
+	 		var prevTrIdx;
+
+	 		$trget.find("p:not(.except)").each(function(){
+	 			var $trgetTr = $(this).closest("tr");
+				var $trgetTd = $(this).closest("td");
+
+				var $trgetP = $trgetTd.find("p");
+
+				if(prevTrIdx != $trgetTr.index()){
+					pHeight = $trgetTd.height() / $trgetP.length;
+				}
+
+				if($trgetP.length-1 == $(this).index()){
+					if($.trim($(this).text()) == ""){
+						$(this).remove();
+					}/* else{
+						$(this).css("background-color", "blue");
+					} */
+				}else{
+					if($(this).height() > (pHeight-cHeight)){
+						$(this).height(pHeight-cHeight);
+					}else{
+						$(this).height(pHeight);
+					}
+				}
+
+				prevTrIdx = $trgetTr.index();
+	 		});
+		}
+
+		
+		fncOpFont = function(){
+			$trget.find("th").css("font-size", "14px")
+			.end().find("td").css({"font-size" : "12px", "line-height" : "normal !important"})
+			.end().find("p").css("font-size", "12px");
+		}
+
+		fncOpHeight();	//레이아웃 조정
+		//fncOpFont();	//폰트 스타일 변경
+	});
+</script>

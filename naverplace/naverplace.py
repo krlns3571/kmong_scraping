@@ -19,7 +19,7 @@ excel_file = 'input.xlsx'
 
 excel_dir = os.path.join(excel_file)
 
-df_from_excel = pd.read_excel(excel_dir, sheet_name='input')
+df_from_excel = pd.read_excel(excel_dir)
 df_from_excel = df_from_excel.replace({np.nan: None})
 
 links = df_from_excel['예약 link']
@@ -65,6 +65,7 @@ def explicitly_wait(driver, by, name):
 def get_info(link, driver, cnt):
     nowtime = datetime.datetime.now().time().replace(microsecond=0)
     now_times.append(datetime.datetime.now().replace(microsecond=0))
+    flag = False
     if link is None:
         results.append('링크없음')
         # print('링크없음')
@@ -84,6 +85,30 @@ def get_info(link, driver, cnt):
 
         try:
             driver.find_element(By.XPATH, "//i[contains(@class,'fn-calendar1')]").click()
+        except:
+            pass
+
+        try:
+            driver.find_element(By.XPATH, "//span[contains(text(),'오늘')]").click()
+            time.sleep(.1)
+
+            try:
+                driver.find_element(By.XPATH, "//a[@class='expand_btn']").click()
+                time.sleep(.1)
+            except:
+                pass
+
+            try:
+                driver.find_element(By.XPATH, "//span[contains(@class,'_toast_alert_text')]/span")
+                results.append('예약불가')
+                return
+            except:
+                try:
+                    driver.find_element(By.XPATH, "//span[contains(@class,'alert_txt')]")
+                    results.append('예약불가')
+                    return
+                except:
+                    pass
         except:
             pass
 
@@ -110,14 +135,15 @@ def get_info(link, driver, cnt):
             time_boxes = driver.find_elements(By.XPATH, "//a[contains(@class,'time_box')]/..")[time_idx:]
             rows = len([timebox.get_attribute('class') for timebox in time_boxes if
                         timebox.get_attribute('class').find('none') > -1])
+            flag = True
         except:
             try:
                 driver.find_element(By.XPATH, "//span[contains(text(),'오늘')]").click()
-                time.sleep(.5)
+                time.sleep(.1)
 
                 try:
                     driver.find_element(By.XPATH, "//a[@class='expand_btn']").click()
-                    time.sleep(.5)
+                    time.sleep(.1)
                 except:
                     pass
 
@@ -144,6 +170,26 @@ def get_info(link, driver, cnt):
                 rows = len([value for value in
                             driver.find_elements(By.XPATH, "//span[contains(@class,'box_info2')]")[time_idx:] if
                             value.text == '매진'])
+
+                if not rows:
+
+                    times_results = [datetime.datetime.strptime("AM " + x.text, "%p %I:%M").time() for x in
+                                     driver.find_elements(By.XPATH,
+                                                          "//div[contains(@ng-if,'amTimeBlocks.length > 0')]//a")]
+                    [times_results.append(datetime.datetime.strptime("PM " + x.text, "%p %I:%M").time()) for x in
+                     driver.find_elements(By.XPATH, "//div[contains(@ng-if,'pmTimeBlocks.length > 0')]//a")]
+
+                    time_idx = 0
+                    for idx, result in enumerate(times_results):
+                        if nowtime < result:
+                            time_idx = idx
+                            break
+
+                    time_boxes = driver.find_elements(By.XPATH, "//a[contains(@ng-click,'onSelectTimeBlock')]/..")[
+                                 time_idx:]
+                    rows = len([timebox.get_attribute('class') for timebox in time_boxes if
+                                timebox.get_attribute('class').find('none') > -1])
+
             except:
                 times_results = [datetime.datetime.strptime("AM " + x.text, "%p %I:%M").time() for x in
                                  driver.find_elements(By.XPATH, "//div[contains(@ng-if,'amTimeBlocks.length > 0')]//a")]
@@ -158,8 +204,10 @@ def get_info(link, driver, cnt):
 
                 time_boxes = driver.find_elements(By.XPATH, "//a[contains(@ng-click,'onSelectTimeBlock')]/..")[
                              time_idx:]
-                rows = len([timebox.get_attribute('class') for timebox in time_boxes if
+                rows = len([timebox.text for timebox in time_boxes if
                             timebox.get_attribute('class').find('none') > -1])
+
+                flag = True
 
         # //span[contains(@ng-bind,'$ctrl.getHourMinute')]
 
@@ -171,7 +219,7 @@ def get_info(link, driver, cnt):
         # //span[contains(@class,'time_txt')]
         # //a[contains(@class,'time_box')]
 
-        if not rows:
+        if not rows and not flag:
             try:
                 # times = [value.text for value in driver.find_elements(By.XPATH, "//span[@class='box_info']")]
                 # if not times:
@@ -196,21 +244,22 @@ def get_info(link, driver, cnt):
             except:
                 pass
 
-        if rows == 0:
-            try:
-                rows = len(driver.find_elements(By.XPATH, "//*[contains(@class,'none')]"))
-            except:
-                pass
+        # if rows == 0:
+        #     try:
+        #         rows = len(driver.find_elements(By.XPATH, "//*[contains(@class,'none')]"))
+        #     except:
+        #         pass
         results.append(rows)
     except Exception as e:
         try:
             if driver.find_element(By.XPATH, "//*[contains(@translate,'CM-ERRORNOTIFY_INFO')]"):
 
-                cnt -= 1
-                if cnt > 0:
-                    get_info(link, driver, cnt)
-                else:
-                    results.append('이용할 수 없는 예약서비스')
+                # cnt -= 1
+                # if cnt > 0:
+                #     get_info(link, driver, cnt)
+                # else:
+                results.append('이용할 수 없는 예약서비스')
+                return
         except:
             pass
         results.append('유효하지않음')
@@ -220,7 +269,7 @@ def get_info(link, driver, cnt):
 if __name__ == '__main__':
     driver = webdriver.Chrome(executable_path=f'./{chrome_ver}/chromedriver.exe', chrome_options=options,
                               desired_capabilities=caps)
-
+    # links = ["https://m.booking.naver.com/booking/13/bizes/617652/items/4187637?area=bmp&service-target=map-pc"]
     cnt = 5
     for link in tqdm(links, unit='링크'):
         get_info(link, driver, cnt)

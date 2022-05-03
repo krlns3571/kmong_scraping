@@ -34,6 +34,10 @@ yesterday = str(yesterday)
 
 today = str(datetime.now().date())
 
+# 연간 월 비율 입력
+time_year = '2021-01-01'
+time_year2 = '2021-12-31'
+
 
 # 네이버 광고 API
 def naverKwdApi(keword):
@@ -54,7 +58,13 @@ def naverKwdApi(keword):
 def get_ratio():
     for client_id, client_secret in zip(client_ids, client_secrets):
         url = "https://openapi.naver.com/v1/datalab/search"
+
+        # 월간 일별 비율
         body = "{\"startDate\":\"" + time_month + "\",\"endDate\":\"" + today + "\",\"timeUnit\":\"date\",\"keywordGroups\":[{\"groupName\":\"" + keyword + "\",\"keywords\":[\"" + keyword + "\"]}]}"
+
+        # 연간 월별 비율
+        # body = "{\"startDate\":\"" + time_year + "\",\"endDate\":\"" + time_year2 + "\",\"timeUnit\":\"month\",\"keywordGroups\":[{\"groupName\":\"" + keyword + "\",\"keywords\":[\"" + keyword + "\"]}]}"
+
         requested = urllib.request.Request(url)
         requested.add_header("X-Naver-Client-Id", client_id)
         requested.add_header("X-Naver-Client-Secret", client_secret)
@@ -72,7 +82,7 @@ def get_ratio():
                     return result
                 else:
                     # print('Error code:' + rescode)
-                    cnt -=1
+                    cnt -= 1
                     sleep(1)
                     continue
             except:
@@ -88,6 +98,11 @@ if __name__ == '__main__':
         a = naverKwdApi(keyword.replace(' ', ''))
 
         result = get_ratio()
+
+        if result['timeUnit'] == 'month':
+            print(result['results'][0]['title'])
+            [print(x['period'] + '\t' + str(x['ratio'])) for x in result['results'][0]['data']]
+            exit(1)
 
         if result:
             pass

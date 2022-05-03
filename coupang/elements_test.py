@@ -48,12 +48,20 @@ flag = True
 
 product_result = []
 while flag:
+
     driver.get(
         f"https://www.coupang.com/np/search?rocketAll=false&q={keyword}&brand=&offerCondition=&filter=&availableDeliveryFilter=&filterType=&isPriceRange=false&priceRange=&minPrice=&maxPrice=&page={page}&trcid=&traid=&filterSetByUser=true&channel=user&backgroundColor=&component=&rating=0&sorter=scoreDesc&listSize=36")
     if first_time:
         driver.refresh()
         first_time = False
-        lastpage = int(driver.find_element(By.XPATH, "//a[contains(@class,'btn-last')]").text)
+        try:
+            lastpage = int(driver.find_element(By.XPATH, "//a[contains(@class,'btn-last')]").text)
+        except:
+            try:
+                lastpage = int(driver.find_elements(By.XPATH, "//span[contains(@class,'btn-page')]/a")[-1].text)
+            except:
+                lastpage = 1
+
     list_all = driver.find_elements(By.XPATH, "//a[contains(@class,'search-product-link')]")
     list_rocket = driver.find_elements(By.XPATH,
                                        "//a[contains(@class,'search-product-link')]//span[contains(@class,'badge rocket')]//ancestor::a")
@@ -61,10 +69,9 @@ while flag:
                                          "//a[contains(@class,'search-product-link')]//div[contains(@class,'descriptions')]/div[contains(@class,'name')]")
     list_rocket_name = driver.find_elements(By.XPATH,
                                             "//a[contains(@class,'search-product-link')]//span[contains(@class,'badge rocket')]//ancestor::div[contains(@class,'descriptions')]/div[contains(@class,'name')]")
-
-    page += 1
     if lastpage == page:
         flag = False
+    page += 1
     not_rocket = [x for x in list_all if x not in list_rocket]
     not_rocket_name = [x for x in list_all_name if x not in list_rocket_name]
 

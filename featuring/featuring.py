@@ -16,7 +16,7 @@ from selenium.webdriver.support.wait import WebDriverWait
 from tqdm import tqdm
 
 chrome_ver = chromedriver_autoinstaller.get_chrome_version().split('.')[0]  # 크롬드라이버 버전 확인
-chromedriver_autoinstaller.install(True)
+path = chromedriver_autoinstaller.install(True)
 
 
 def explicitly_wait(driver, by, name):
@@ -55,7 +55,7 @@ options.add_argument('user-agent={0}'.format(user_agent))
 
 caps = DesiredCapabilities.CHROME
 caps['goog:loggingPrefs'] = {'performance': 'ALL'}
-s = Service(f'./{chrome_ver}/chromedriver.exe')
+s = Service(path)
 
 driver = webdriver.Chrome(service=s, options=options,
                           desired_capabilities=caps) # 카테고리 세팅을 위한 chromedriver

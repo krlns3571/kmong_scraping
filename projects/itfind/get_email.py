@@ -127,7 +127,7 @@ for x in urls:
     #         driver.close()
     # driver.switch_to.window(main[0])
 
-    with open('kci_result4.txt', 'a',encoding='utf8') as f:
+    with open('kci_result4.txt', 'a', encoding='utf8') as f:
         f.write(f"{x['name']}\t{x['homepage']}\t{x['email']}\t{x['num']}\n")
 
     # print(x)

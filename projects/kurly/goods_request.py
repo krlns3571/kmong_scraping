@@ -46,7 +46,7 @@ for goods in goods_list:
         expiration_date = data['expiration_date']
         discounted_price = data['discounted_price']
         values.append(f'{url}\t{name}\t{weight}\t{origin_}\t{packing_type_text}\t{expiration_date}\t{discounted_price}')
-        with open('goods.txt','a',encoding='utf8') as f:
+        with open('goods.txt', 'a', encoding='utf8') as f:
             f.write(f'{url}\t{name}\t{weight}\t{origin_}\t{packing_type_text}\t{expiration_date}\t{discounted_price}\n')
     except Exception as e:
         print(e)

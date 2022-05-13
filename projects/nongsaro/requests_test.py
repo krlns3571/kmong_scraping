@@ -98,10 +98,10 @@ for year in years[13:]:
                 with open(fr'./result/{year}_{region_text_file}_{filename}.txt', 'w', encoding='utf8') as f:
                     f.write('데이터 없음')
                 continue
-            with open(r'./r.html', 'wb') as f:
+            with open(r'r.html', 'wb') as f:
                 f.write(r.content)
 
             excelApp = w3c.Dispatch('Excel.Application')
-            book = excelApp.Workbooks.Open(os.path.abspath('./r.html'))
+            book = excelApp.Workbooks.Open(os.path.abspath('r.html'))
             book.SaveAs(f'./result/{year}_{region_text_file}_{filename}' + '.xlsx', 51)
             excelApp.Quit()

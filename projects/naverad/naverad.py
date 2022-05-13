@@ -60,10 +60,10 @@ def get_ratio():
         url = "https://openapi.naver.com/v1/datalab/search"
 
         # 월간 일별 비율
-        body = "{\"startDate\":\"" + time_month + "\",\"endDate\":\"" + today + "\",\"timeUnit\":\"date\",\"keywordGroups\":[{\"groupName\":\"" + keyword + "\",\"keywords\":[\"" + keyword + "\"]}]}"
+        # body = "{\"startDate\":\"" + time_month + "\",\"endDate\":\"" + today + "\",\"timeUnit\":\"date\",\"keywordGroups\":[{\"groupName\":\"" + keyword + "\",\"keywords\":[\"" + keyword + "\"]}]}"
 
         # 연간 월별 비율
-        # body = "{\"startDate\":\"" + time_year + "\",\"endDate\":\"" + time_year2 + "\",\"timeUnit\":\"month\",\"keywordGroups\":[{\"groupName\":\"" + keyword + "\",\"keywords\":[\"" + keyword + "\"]}]}"
+        body = "{\"startDate\":\"" + time_year + "\",\"endDate\":\"" + time_year2 + "\",\"timeUnit\":\"month\",\"keywordGroups\":[{\"groupName\":\"" + keyword + "\",\"keywords\":[\"" + keyword + "\"]}]}"
 
         requested = urllib.request.Request(url)
         requested.add_header("X-Naver-Client-Id", client_id)
@@ -101,7 +101,7 @@ if __name__ == '__main__':
 
         if result['timeUnit'] == 'month':
             print(result['results'][0]['title'])
-            [print(x['period'] + '\t' + str(x['ratio'])) for x in result['results'][0]['data']]
+            [print(x['period'] + '\n' + str(x['ratio'])) for x in result['results'][0]['data']]
             exit(1)
 
         if result:
@@ -200,7 +200,10 @@ if __name__ == '__main__':
         except:
             pass
 
-        print(dictionary_now[keyword])
+        # print(dictionary_now[keyword])
+        for idx, x in dictionary_now[keyword].iterrows():
+            print(x['날짜'])
+            print(x[keyword])
         print('=' * 100)
 
 # print(1)

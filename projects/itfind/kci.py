@@ -150,7 +150,7 @@ def get_result(target):
         email = infos[1].text.split('Email')[1]
         tel = infos[4].text.split('Tel')[1]
         print(f'{name}\t{email}\t{tel}')
-        with open('itfind.txt','a',encoding='utf8') as f:
+        with open('itfind.txt', 'a', encoding='utf8') as f:
             f.write(f'{name}\t{email}\t{tel}\n')
         driver.close()
         # time.sleep(1)

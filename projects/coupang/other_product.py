@@ -1,0 +1,18 @@
+import requests
+
+headers = {
+    'authority': 'www.coupang.com',
+    'accept': '*/*',
+    'accept-language': 'ko,en-US;q=0.9,en;q=0.8,ko-KR;q=0.7',
+    # Requests sorts cookies= alphabetically
+    # 'cookie': 'PCID=1438947768774836914954; MARKETID=1438947768774836914954; gd1=Y; x-coupang-origin-region=KOREA; _ga=GA1.2.1598409883.1637896646; sid=c0e842e2e49343a98fb24ad97b86d6b7c9c08ec8; x-coupang-target-market=KR; searchKeyword=%ED%95%B8%EB%93%9C%ED%8F%B0%EA%B1%B0%EC%B9%98%EB%8C%80; searchKeywordType=%7B%22%ED%95%B8%EB%93%9C%ED%8F%B0%EA%B1%B0%EC%B9%98%EB%8C%80%22%3A0%7D; FUN="{\'search\':[{\'reqUrl\':\'/search.pang\',\'isValid\':true}]}"; x-coupang-accept-language=ko_KR; X-CP-PT-locale=ko_KR; _abck=7A07A81741CFC15F3A16558B5C25495E~0~YAAQ7Jc7F3XbkRqAAQAA3L9WOgcTUgl0ZzFwSIw1mLp7taUcngN2SwprN7uWqHv4igXwxHGj4eIU1w/J32Ak/9SbLSY2RKnwz8c5k9TT5wI56/PapFp6VVuurjD177X0MgMGGASj+jGhzfJyc6/4by+jpQNCvZrUeH/3IfMKOG9aKPEFDlPJiSqII8cfccVGAoZwsMf3xYjzUqUdmfGUg4R6eR8ZI/wFKgbZwmdEDwl6vKvOmb7ej+I2iSQbt32k53kL6NQy5y6GXslDH18WG7iqZgBHIGk0q8sEolJAwzgOWi1LXf+bmC9Dfb1vG7bkXve6/HWcy8mKkZwfQNcHgvfg0Zm5yNPi0ne2ykw0+PWxCkwhO8A1O/EWJWTaxZR1rYN/eCdCS68KPfWyLG5KEAM4fDsNJ82ziA==~-1~-1~-1; clickCoach=yes; bm_mi=EFE86CA132CDC802B923F5BB06637CEA~4tCKq0b5SVgeep+6smJVNmpeafBwHOx9OamkSdB3mwD7C3NoI0HZvFYo69kswe9ULssgA5HnC7rt6vX04HdMxDOGN96cXRnPX0tTTTNBoBMOlkffs9xp3QqcjP239OX+IQGrWbWzO3CM/ATc8CnK+Z3ngf6SQdaxwgMyVLx1E/qV4NSXA+s621OriRjQk3D/w/qO3ZNeCToe/EKNeGC31oeAvxWcXEo1OTTwk6qXs+kk1RtEhjOsokZg2F/NCUqTOc0axWIVZ1VOw37/uVIr7A==; ak_bmsc=B92295D12B5494F040069692F8F89756~000000000000000000000000000000~YAAQbgI1F1N5TQiAAQAATv/tOg+RIVxtvejDgqZSOcrVLOm0zkp6YgGe7q8fTZeQrOH6a6VPHysoEJEsm9J45L4Ny5f7X8eYovfKx8CQZnH4tWURvW706E0dcw0e8Mz4M25GjeIbZVQYIVLudZPeQ8yVYsT4y7GzEyslpiRtrryYuTMbH+NQrJ8gONPTxTaGoAOpjx63oAmiBwGfKsNMcGhAoew3lAAhj93yxdJyVmSmOvc8/TRMXXwQgyVI1EY0oJ1WGBj/ntp3wFusSGm9OvLor/DbV1PxgWQME2yydwaCoN5qQDgs/i4FBT0p6r209wmKV4Ah2FpaHYuGiZnjg74F5AlggpdPnAaB3r2luaAeoQzZ4c9u6eHpHf4f+MCqztjfqPvc5r4YkfIHFvSub2HhMdIC2FoXK5n6RpPuUEczda5HlXwSwY8k8pCXA2EuKO4YiY0iDqV2XHKd2vk0nPAqzohkF2mCV3mC6LJl1ctzRNFtRa+h3Y21O/IZPdiQ8WiXVliu2lMhVN5Jmu4dq7PFL4gJPG8iNyXbpJW4IbKgLY+mRw==; overrideAbTestGroup=%5B%5D; bm_sz=3BC0B20EA9F2E984E647E45B30798653~YAAQrQI1F11NHg6AAQAAmnsqOw9BAOHg4YTiRVC9b5WHxNmUNs5KgJsAixDEqxPJDxc7KdR8pF0tY3w7xFacgj+sK++A2VVsvk6z0ejy7NtDD9sVB5t+vdii450Swj9s4lpQ7RYDJH5xJiCrVb1RUcud/VoSmEot8DmtpE6Uncv/zkIi8fdREtnTvbCPQn0lfOfNzLCO8Jt85o76wO13a9j/jv4zWy5EbCrkdqGRzFMyLTuHS+/5kz3/iqpb4RbdHCZaPv1L3BH+2EyWPJYeSs4GElGFDvFuJuDGSSoP5PpcJdixMEUJVlmc5aYJhRAUqmr5oKARPvIrkpoZ~3618358~3359811; cto_bundle=QK-6Sl9sSWJBamtRSFFEaWlBNDdldGIlMkJXUG4lMkZyMWZScVptT0pZTG5ZZFYxVm1GT0dRcEwlMkJTdjZFVnNacjd3OGJnRlNGbDZVdEhraWNtR09Rb3FuS1FFamIzR0ZaTmJRMFBlQ3RFRTglMkZ2aWl1d3JCSkVXWEliQ1VTZXhQTzRaTVhVTU1jd3lPWU0xZ1BNVzZDSkxRakhCbU1qZyUzRCUzRA; baby-isWide=wide; bm_sv=01218A633CA99058EB994219C98C50CB~BPvtSJzIWw/U6hHlO2zYv6vzrLHZV6HJnEA3KEgK5L75WOpUKkDNdF0riIeXLr9NqIz2JiNkBeYNNkgbrYwMzQV1B62BaqOImhUHQuiUrHUkUDaK6W+WfDw9SAzqFHVdrkah40X/HH9ImCjyeKUVTqSP9SHu//r8QDSoGfPIe2E=',
+    'sec-ch-ua': '" Not A;Brand";v="99", "Chromium";v="100", "Google Chrome";v="100"',
+    'sec-ch-ua-mobile': '?0',
+    'sec-ch-ua-platform': '"Windows"',
+    'sec-fetch-dest': 'empty',
+    'sec-fetch-mode': 'cors',
+    'sec-fetch-site': 'same-origin',
+    'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.88 Safari/537.36',
+}
+
+response = requests.get('https://www.coupang.com/vp/products/6199126502?isAddedCart=', headers=headers)

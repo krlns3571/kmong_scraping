@@ -1,6 +1,6 @@
 import pandas as pd
 
-from projects.class101.get_result import Handler
+from class101.get_result import Handler
 
 h = Handler()
 

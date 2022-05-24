@@ -167,7 +167,8 @@ if __name__ == '__main__':
     all_buttons = driver.find_elements(By.XPATH, "//div[contains(text(),'All')][contains(@class,'time-span')]")
     all_buttons[0].click()
     time.sleep(.5)
-    while True:
+    cnt = 3
+    while cnt:
         try:
             time.sleep(.5)
             all_buttons[1].click()
@@ -176,6 +177,7 @@ if __name__ == '__main__':
             all_buttons[2].click()
             break
         except:
+            cnt -=1
             pass
     time.sleep(2)
     marketcap, metrics, collections, holder_trader = extract_logs(driver,
@@ -657,6 +659,6 @@ if __name__ == '__main__':
     # except:
     #     pass
     # driver.close()
-    print(1)
+    # print(1)
     print(f"{os.path.abspath(f'./{file_datetime}')} 에 모든 결과가 저장되었습니다.\n해당 창은 꺼주셔도 좋습니다.")
     exit(1)
